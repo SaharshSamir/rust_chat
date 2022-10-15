@@ -1,4 +1,9 @@
 # Multithreaded Chat server using Rust
+
+## Must Haves
+1. Rust
+2. Cargo
+ 
  ## How To Run
  1. cd into chat-server and run the server using 'cargo run'. This starts the chat server.
  2. Now to connect to the server as a client, cd into 'chat-client' and run using 'cargo run'
