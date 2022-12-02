@@ -28,27 +28,34 @@ async fn main() {
     let ws_to_stdout = ws_read.for_each(|message| async {
         match message {
             Ok(m) => {
-                println!("---------Debug--------> {}", m);
+                println!(
+                    "---------Debug--------> {} {} {}",
+                    m,
+                    m.is_ping(),
+                    m.is_pong()
+                );
                 match m {
                     Message::Text(msg) => {
                         // let data = msg;
                         // stdin_tx.unbounded_send(Message::Ping(vec![]));
-                        let mut payload_iter = msg.splitn(2, " ");
-                        let usr_addr = payload_iter.next();
-                        let actual_message = payload_iter.next();
-                        // let (tx, rx) = unbounded::<Message>();
-                        match usr_addr {
-                            Some(usr_address) => tx
-                                .unbounded_send(Message::Ping(
-                                    String::from(usr_address).into_bytes(),
-                                ))
-                                .unwrap(),
-                            None => (),
-                        }
+                        if !msg.is_empty() {
+                            let mut payload_iter = msg.splitn(2, " ");
+                            let usr_addr = payload_iter.next();
+                            let actual_message = payload_iter.next();
+                            // let (tx, rx) = unbounded::<Message>();
+                            match usr_addr {
+                                Some(usr_address) => tx
+                                    .unbounded_send(Message::Ping(
+                                        String::from(usr_address).into_bytes(),
+                                    ))
+                                    .unwrap(),
+                                None => (),
+                            }
 
-                        match actual_message {
-                            Some(m) => println!("{}", m),
-                            None => (),
+                            match actual_message {
+                                Some(m) => println!("{}", m),
+                                None => (),
+                            }
                         }
                         // tx.unbounded_send(Message::Ping(usr_addr.));
                         // rx.map(Ok).forward(ws_write);
@@ -60,7 +67,7 @@ async fn main() {
                         println!("✅");
                     }
                     _ => {
-                        print!("");
+                        print!("what");
                     }
                 }
             }

@@ -85,6 +85,7 @@ async fn handle_me_daddy(degens: Degens, raw_stream: TcpStream, addr: SocketAddr
                     .map(|(_, ws_sink)| ws_sink);
 
                 for ping_user in usr_to_send_ack {
+                    println!("1");
                     ping_user
                         // .unbounded_send(Message::Ping(String::from().into_bytes()))
                         .unbounded_send(Message::Ping(urs_addr.to_string().into_bytes()))
@@ -113,11 +114,15 @@ async fn handle_me_daddy(degens: Degens, raw_stream: TcpStream, addr: SocketAddr
                         .map(|(_, ws_sink)| ws_sink);
 
                     for usr in usr_to_send_ack {
+                        println!("2");
                         usr.unbounded_send(Message::Pong(usr_addr.to_string().into_bytes()))
                             .unwrap();
                     }
-                    // Message::Text(String::from(""))
-                    Message::Ping(String::from("").into_bytes())
+                    Message::Text(String::from(""))
+                    // todo!(k)
+                    // Message::Ping(String::from("").into_bytes())
+                    // Message::Binary(vec![])
+                    // Message::Pong(String::from("").into_bytes())
                 }
                 Message::Text(t) => Message::Text(t),
                 Message::Binary(_) => todo!(),
